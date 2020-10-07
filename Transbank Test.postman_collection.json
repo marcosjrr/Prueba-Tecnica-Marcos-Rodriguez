@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "883fe810-2647-48d6-8c61-eb6b6e452c05",
+		"name": "Transbank Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:5000/people/",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8014d25b-9e89-4483-bd4f-e0dd2934c293",
+						"exec": [
+							"//Test Envío de request para crear el usuario\r",
+							"pm.sendRequest({\r",
+							"    url: 'http://localhost:5000/people/',\r",
+							"    method: 'POST',\r",
+							"    header: {\r",
+							"        'content-type': 'application/json'\r",
+							"    },\r",
+							"    body: {\r",
+							"        mode: 'raw',\r",
+							"        raw: JSON.stringify({\r",
+							"            firstMame: \"Marcos\",\r",
+							"            lastName: \"Rodriguez\",\r",
+							"            age: 32\r",
+							"        })\r",
+							"    }\r",
+							"}, function (err, res) {\r",
+							"    var respuesta = res.json();\r",
+							"    console.log(\"log\", respuesta);\r",
+							"    pm.globals.set(\"responseusuario\", respuesta)\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "51481d7b-101c-47eb-bc7a-e7e400a61f78",
+						"exec": [
+							"\r",
+							"//Test para validar la creación del usuario creado\r",
+							"pm.test(\"Creacion de Usuario\", function () {\r",
+							"    var creausuario = pm.globals.get(\"responseusuario\");\r",
+							"    pm.expect(creausuario.firstMame).to.be.equals(\"Marcos\");\r",
+							"    pm.expect(creausuario.lastName).to.be.equals(\"Rodriguez\");\r",
+							"    pm.expect(creausuario.age).to.be.equals(32)\r",
+							"});\r",
+							"\r",
+							"//Test para validar que usuario posee el campo Id\r",
+							"pm.test(\"Campo Adicional ID\", function () {\r",
+							"    var respuesta = pm.globals.get(\"responseusuario\");\r",
+							"    pm.expect(respuesta.id).to.not.null\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/people/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"people",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:5000/people/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"firstMame\": \"Gabriel\",\n        \"lastName\": \"Fuentes\",\n        \"age\": 11\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/people/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"people",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
